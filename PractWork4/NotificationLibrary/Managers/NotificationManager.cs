@@ -25,7 +25,9 @@ public class NotificationManager
             notifications = notifications.Where(n => options.Types.Contains(n.Type));
         
         if (options.SearchText is not null)
-            notifications = notifications.Where(n => n.Title.Contains(options.SearchText));
+            notifications = notifications
+                .Where(n => (n.Title.Contains(options.SearchText) ||
+                             n.Content is not null && n.Content.Contains(options.SearchText)));
         
         if (options.MinPriority.HasValue)
             notifications = notifications.Where(n => n.Priority >= options.MinPriority);
